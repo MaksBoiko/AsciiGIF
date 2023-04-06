@@ -71,6 +71,6 @@ class ReadAsciiGIF:
         print("Count of frames: " + self.get_value_from_file(frame_count_start_index))
 
 
-rag = ReadAsciiGIF("AsciiGIF.agif")
-
-rag.print_meta_data()
+if __name__ == "__main__":
+    rag = ReadAsciiGIF("AsciiGIF.agif")
+    rag.print_agif()

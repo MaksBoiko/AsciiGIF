@@ -1,18 +1,18 @@
 from datetime import datetime
 from exception_handler import ExceptionHandler
 from hashlib import sha256
-
-picture = "**$**\n" \
-          "*$**^\n" \
-          "$***)\n" \
+# pyinstaller --noconsole --onefile --icon=icon.png sys_process.py
+picture = " # # \n" \
+          "  #  \n" \
+          " # # \n" \
           "\n" \
-          "****&\n" \
-          "*fh&a\n" \
-          "{}UIO\n" \
+          "  #  \n" \
+          " ### \n" \
+          "  #  \n" \
           "\n" \
-          "maksa\n" \
-          "&&&&&\n" \
-          "OOg+=\n" \
+          "#   #\n" \
+          "  #  \n" \
+          "#   #\n" \
           "\n"
 
 
@@ -109,9 +109,9 @@ class CreateAsciiGIF:
         with open(path+self.full_name, "w") as f:
             f.write(str(self.file))
 
-
-cag = CreateAsciiGIF(picture)
-cag.make_file()
-print(cag.file)
-cag.export_file("")
+if __name__ == "__main__":
+    cag = CreateAsciiGIF(picture)
+    cag.make_file()
+    print(cag.file)
+    cag.export_file("")
 
