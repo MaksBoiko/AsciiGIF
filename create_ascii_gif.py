@@ -1,6 +1,9 @@
 from datetime import datetime
 from exception_handler import ExceptionHandler
 from hashlib import sha256
+import sys
+import os
+
 # pyinstaller --noconsole --onefile --icon=icon.png sys_process.py
 picture = " # # \n" \
           "  #  \n" \
@@ -18,12 +21,14 @@ picture = " # # \n" \
 
 class CreateAsciiGIF:
     """create GIF from ASCII symbols, from text which was given user"""
-    def __init__(self, picture):
-        self.picture = picture
+    def __init__(self):
+
+        self.picture = ""
         self.extension = ".agif"
         self.name = "AsciiGIF"
         self.fps = 10
         self.full_name = self.name + self.extension
+        self.dir = str(os.getcwd() + "\\" + self.full_name)
         self.arr_picture = []
         self.frame_count = 0
         self.width = 0
@@ -33,6 +38,14 @@ class CreateAsciiGIF:
         self.creation_date = str(datetime.now())[:-7]
         self.edit_date = str(datetime.now())[:-7]
         self.opening_date = str(datetime.now())[:-7]
+
+        try:
+            with open(path, "r") as f:
+                self.picture = f.read()
+        except FileNotFoundError:
+            print('File in path "{}" no found!'.format(self.dir))
+            sys.exit(1)
+
         row_size = 0
         row_arr = []
         pic_size = len(picture)-1
@@ -52,9 +65,8 @@ class CreateAsciiGIF:
                 self.width += 1
                 self.size += 1
 
-        # check if widths(rows) of frames if equal
+        # check if widths(rows) of frames is equal
         eq_el = row_arr[0]
-        print(row_arr)
         for el in row_arr:
             if eq_el != el:
                 ExceptionHandler('row_exception').raise_exception()
@@ -106,12 +118,19 @@ class CreateAsciiGIF:
         self.file += "\nHASH(SHA256): {};".format(sha256(str(self.file).encode('utf-8')).hexdigest())
 
     def export_file(self, path):
-        with open(path+self.full_name, "w") as f:
-            f.write(str(self.file))
+        try:
+            with open(path+self.full_name, "w") as f:
+                f.write(str(self.file))
+        except FileNotFoundError:
+            print('File in path "{}" no found!'.format(path))
+            sys.exit(1)
+        print("File in path: {} was successfully created!".format(self.dir))
+
 
 if __name__ == "__main__":
-    cag = CreateAsciiGIF(picture)
+    path = input("Enter directory to txt file with frames for new .agif file: ")
+    cag = CreateAsciiGIF()
     cag.make_file()
-    print(cag.file)
     cag.export_file("")
+    sys.exit(0)
 
