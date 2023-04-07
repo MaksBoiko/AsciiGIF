@@ -1,9 +1,7 @@
 import os
 import time
-from datetime import datetime
-from exception_handler import ExceptionHandler
+import msvcrt
 import sys
-
 
 class ReadAsciiGIF:
     def __init__(self, path):
@@ -42,6 +40,12 @@ class ReadAsciiGIF:
             for frame in picture_arr:
                 print(frame, end='')
                 time.sleep(1/fps)
+                if msvcrt.kbhit():
+                    i = str(msvcrt.getch())[2]
+                    if i == 'p':
+                        os.system("pause")
+                    if i == 'x':
+                        sys.exit(0)
                 os.system("cls")
 
     def print_meta_data(self):
@@ -50,7 +54,6 @@ class ReadAsciiGIF:
         extension_start_index = self.file.find("EXTENSION: ")+len("EXTENSION: ")
         frame_width_start_index = self.file.find("_WIDTH: ")+len("_WIDTH: ")
         frame_height_start_index = self.file.find("_HEIGHT: ") + len("_HEIGHT: ")
-        print(frame_height_start_index)
         full_size_start_index = self.file.find("FULL_SIZE: ") + len("FULL_SIZE: ")
         fps_start_index = self.file.find("FPS: ") + len("FPS: ")
         creation_date_start_index = self.file.find("CREATION_DATE: ") + len("CREATION_DATE: ")
@@ -72,5 +75,6 @@ class ReadAsciiGIF:
 
 
 if __name__ == "__main__":
-    rag = ReadAsciiGIF("AsciiGIF.agif")
+    path = input("Enter directory to .agif file: ")
+    rag = ReadAsciiGIF(path)
     rag.print_agif()
